@@ -228,7 +228,7 @@ public class Pont {
 
     private void log(String message) {
         journal.add(LocalTime.now().withNano(0) + "  " + message);
-        if (journal.size() > 12) {
+        if (journal.size() > 10) {
             journal.removeFirst();
         }
         afficher();
@@ -236,36 +236,64 @@ public class Pont {
 
     private void afficher() {
         StringBuilder sb = new StringBuilder("\033[H\033[2J");
-        sb.append("Pont : ").append(etat).append("\n");
+        sb.append("\n  ===== PONT MOBILE =====\n\n");
+        sb.append("  État du pont : ").append(couleur(etat)).append(etat).append("\033[0m\n");
         if (prochaineOuverture > System.currentTimeMillis()) {
             LocalTime heure = LocalTime.ofInstant(Instant.ofEpochMilli(prochaineOuverture), ZoneId.systemDefault());
-            sb.append("Prochaine ouverture possible à ").append(heure.withNano(0)).append("\n");
+            sb.append("  Prochaine ouverture possible à ").append(heure.withNano(0)).append("\n");
         }
-        sb.append("\nGauche -> Droite : ");
+        sb.append("\n  Route\n");
+        sb.append("  ---------------------------------------------\n");
+        sb.append("  Gauche -> Droite  ");
         for (int i = 0; i < n; i++) {
             sb.append(cellule(voies[0][i]));
         }
-        sb.append("\nDroite -> Gauche : ");
+        sb.append("  ->\n");
+        sb.append("  Droite -> Gauche  ");
         for (int i = n - 1; i >= 0; i--) {
             sb.append(cellule(voies[1][i]));
         }
-        sb.append("\n\nBande d'urgence : ").append(prioritaireEnCours == null ? "-" : prioritaireEnCours);
-        sb.append("\nBateau en passage : ").append(bateauEnCours == null ? "-" : bateauEnCours);
-        sb.append("\nBateaux en attente : ");
+        sb.append("  <-\n");
+        sb.append("  ---------------------------------------------\n");
+        sb.append("  Bande d'urgence : ").append(prioritaireEnCours == null ? "libre" : prioritaireEnCours).append("\n");
+        sb.append("\n  Rivière\n");
+        sb.append("  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        sb.append("  Sous le pont : ").append(bateauEnCours == null ? "personne" : bateauEnCours).append("\n");
+        sb.append("  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        sb.append("  Bateaux en attente : ");
+        int rang = 0;
         for (Bateau b : file) {
             if (b != bateauEnCours) {
-                sb.append(b).append("  ");
+                sb.append(++rang).append(". ").append(b).append("   ");
             }
         }
-        sb.append("\n\n");
+        if (rang == 0) {
+            sb.append("aucun");
+        }
+        sb.append("\n\n  V = voiture   C = camion   X = convoi   P = prioritaire\n");
+        sb.append("\n  Derniers événements\n");
         for (String ligne : journal) {
-            sb.append(ligne).append("\n");
+            sb.append("  ").append(ligne).append("\n");
         }
         System.out.print(sb);
         System.out.flush();
     }
 
+    private String couleur(EtatPont e) {
+        switch (e) {
+            case FERME:
+                return "\033[32m";
+            case OUVERT:
+                return "\033[31m";
+            default:
+                return "\033[33m";
+        }
+    }
+
     private String cellule(Segment s) {
-        return String.format("[%-4s]", s.estLibre() ? "" : s.getOccupant().toString());
+        if (s.estLibre()) {
+            return "[    ]";
+        }
+        return String.format("[%-4s]", s.getOccupant());
     }
 }
