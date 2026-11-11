@@ -11,8 +11,9 @@ public class Segment {
 
     /** Réserve une cellule libre et refuse tout écrasement de son occupant. */
     public void occuper(Vehicule v) {
-        if (v == null || occupant != null)
-            throw new IllegalStateException("Segment deja reserve ou occupant null");
+        if (v == null || occupant != null) {
+            throw new IllegalStateException("Reservation impossible : segment occupe ou vehicule null");
+        }
         occupant = v;
     }
 

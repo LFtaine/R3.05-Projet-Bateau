@@ -12,8 +12,9 @@ public abstract class Vehicule implements Runnable {
 
     /** Construit un acteur avec ses paramètres. */
     public Vehicule(String nom, int sens, int taille, Pont pont) {
-        if (nom == null || nom.isEmpty() || pont == null || sens < 0 || sens > 1 || taille < 1)
+        if (nom == null || nom.isEmpty() || pont == null || sens < 0 || sens > 1 || taille < 1) {
             throw new IllegalArgumentException("Parametres vehicule invalides");
+        }
         this.nom = nom;
         this.sens = sens;
         this.taille = taille;

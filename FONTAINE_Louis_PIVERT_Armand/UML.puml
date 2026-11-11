@@ -26,6 +26,7 @@ class Bateau implements Runnable {
 }
 class Pont implements AutoCloseable {
  - voies : Segment[2][N]
+ - journal : List<Evenement>
  - presents : Set<Vehicule>
  - convois : LinkedList<Vehicule>
  - priorites : LinkedList<Vehicule>
@@ -38,6 +39,10 @@ class Pont implements AutoCloseable {
  + attendreRepos(timeoutMs : long) : boolean
  + evenements() : List<Evenement>
  + close() : void
+ - {synchronized} entrerVehicule(Vehicule) : void
+ - {synchronized} avancerVehicule(Vehicule, int) : void
+ - {synchronized} retirerVehicule(Vehicule) : void
+ - {synchronized} entrerBateau(Bateau) : void
 }
 class Segment {
  - occupant : Vehicule

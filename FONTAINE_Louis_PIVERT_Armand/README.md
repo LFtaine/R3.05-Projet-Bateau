@@ -2,6 +2,8 @@
 
 Binôme : Louis FONTAINE et Armand PIVERT
 
+Version reprise à partir du cours R3.05 fourni. Voir **CONFORMITE_COURS.md** pour les correspondances page par page, les choix de modélisation et les limites.
+
 ## Exécution
 
 Java 8 ou supérieur suffit pour exécuter le JAR. Dans un terminal ouvert dans ce dossier :
@@ -30,13 +32,13 @@ Windows : `powershell -ExecutionPolicy Bypass -File .\compiler.ps1`, puis `power
 
 Linux/macOS : `sh compiler.sh`, puis `sh tester.sh`.
 
-Test optionnel d’environ 72 secondes avec une minute réelle et la configuration normale : `powershell -ExecutionPolicy Bypass -File .\tester.ps1 -Minute` ou `sh tester.sh --minute`.
+Test long avec une minute réelle : `powershell -ExecutionPolicy Bypass -File .\tester.ps1 -Minute` ou `sh tester.sh --minute`.
 
 Les sources applicatives sont dans `projet/src/voyage`, les tests autonomes dans `projet/test/voyage`. Les scripts excluent les tests du JAR et produisent les classes dans `build/`.
 
 ## Organisation et synchronisation
 
-Chaque véhicule et bateau implémente `Runnable` et possède son propre thread. `Pont` est le moniteur central : ses données sont protégées par le verrou `this`. Les réservations, changements d’état, inscriptions FIFO et décisions d’entrée sont atomiques. Les prédicats sont réévalués dans des boucles `while` après chaque réveil `wait()` ; `notifyAll()` réveille les catégories d’acteurs potentiellement débloquées. Les `sleep()` sont effectués hors du verrou.
+Chaque véhicule et bateau implémente `Runnable` et possède son propre thread. `Pont` est le moniteur central : ses données sont protégées par le verrou `this`. Les réservations, changements d’état, inscriptions FIFO et décisions d’entrée sont atomiques. Les opérations sont séparées en méthodes synchronisées nommées `inscrireVehicule`, `entrerVehicule`, `avancerVehicule`, `retirerVehicule`, `entrerBateau` et en étapes de commande du pont. Les prédicats sont réévalués dans des boucles `while` après chaque réveil `wait()` ; `notifyAll()` réveille les catégories d’acteurs potentiellement débloquées. Les `sleep()` sont effectués hors du verrou.
 
 Deux tableaux de segments représentent les deux voies. Les indices sont relatifs au sens de déplacement ; l’affichage inverse ceux de droite vers gauche. Une voiture réserve 1 segment, un camion 2 et un convoi 4 à l’entrée, en une seule opération. Les véhicules avancent d’un segment : la nouvelle tête est réservée avant la libération de la queue, sous le même verrou. Les segments communs entre ancienne et nouvelle position restent réservés. À la sortie, le nombre de segments diminue progressivement jusqu’au départ de la queue.
 
@@ -60,6 +62,7 @@ Les tests couvrent les convois opposés, le blocage des entrées, la FIFO commun
 
 ## Contenu du livrable
 
+- `CONFORMITE_COURS.md` : justification avec pages du cours et tableau de couverture du sujet.
 - `projet/src/voyage/*.java` : sources commentées.
 - `projet/test/voyage/TestsPont.java` : tests sans dépendance externe.
 - `projet.jar` : exécutable compatible Java 8.
