@@ -1,0 +1,7 @@
+Toutes les fonctionnalités de simulation demandées sont implémentées : segments, deux sens routiers, convois, priorités, quatre états, bateaux FIFO, Timer et délai d’une minute en mode normal.
+
+La connaissance de l’heure prévue par chaque bateau n’est pas implémentée : le sujet précise explicitement que cette contrainte n’est pas prise en compte. L’interface indique le délai restant.
+
+La vidéo fournie est muette et générée à partir de la sortie console réelle. Une trame de présentation orale est fournie séparément. Aucun enregistrement de la voix des étudiants n’a été effectué.
+
+Choix de modélisation à connaître : un véhicule long avance d’un segment en conservant les réservations qui se recouvrent ; deux convois opposés sont départagés par ordre d’arrivée ; une priorité ne permet jamais de croiser un convoi opposé engagé ni de franchir un pont en cours d’ouverture. Les tests sont décrits dans README.md et VALIDATION.txt.

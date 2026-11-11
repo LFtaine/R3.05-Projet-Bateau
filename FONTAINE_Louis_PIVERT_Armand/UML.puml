@@ -1,0 +1,71 @@
+@startuml
+skinparam classAttributeIconSize 0
+abstract class Vehicule implements Runnable {
+ - nom : String
+ - sens : int
+ - taille : int
+ - pont : Pont
+ + run() : void
+ + estPrioritaire() : boolean
+ + getSens() : int
+ + getTaille() : int
+}
+class Voiture
+class Camion
+class Convoi
+class Prioritaire
+Vehicule <|-- Voiture
+Vehicule <|-- Camion
+Vehicule <|-- Convoi
+Vehicule <|-- Prioritaire
+class Bateau implements Runnable {
+ - nom : String
+ - direction : String
+ - pont : Pont
+ + run() : void
+}
+class Pont implements AutoCloseable {
+ - voies : Segment[2][N]
+ - presents : Set<Vehicule>
+ - convois : LinkedList<Vehicule>
+ - priorites : LinkedList<Vehicule>
+ - urgences : Vehicule[2]
+ - bateaux : LinkedList<Bateau>
+ - etat : EtatPont
+ - timer : Timer
+ + traverser(v : Vehicule) : void
+ + passerBateau(b : Bateau) : void
+ + attendreRepos(timeoutMs : long) : boolean
+ + evenements() : List<Evenement>
+ + close() : void
+}
+class Segment {
+ - occupant : Vehicule
+ + estLibre() : boolean
+ + occuper(v : Vehicule) : void
+ + liberer() : void
+}
+enum EtatPont {
+ FERME
+ OUVERTURE
+ OUVERT
+ FERMETURE
+}
+class "Pont.Evenement" as Evenement {
+ + type : String
+ + nom : String
+ + nanos : long
+}
+class Main {
+ + {static} main(args : String[]) : void
+}
+Pont "1" *-- "2*N" Segment
+Segment "0..*" --> "0..1" Vehicule : occupant
+Vehicule "0..*" --> "1" Pont
+Bateau "0..*" --> "1" Pont
+Pont --> EtatPont
+Pont *-- "0..*" Evenement : journal
+Main ..> Pont
+Main ..> Vehicule
+Main ..> Bateau
+@enduml

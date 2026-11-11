@@ -1,0 +1,27 @@
+VALIDATION — 11 novembre 2026
+
+Compilation : JDK 25, cible Java 8 (--release 8), sources UTF-8.
+Scripts Windows compiler.ps1 et tester.ps1 exécutés avec succès.
+JAR final exécuté sous Java 1.8.0_503 : simulation terminée, 55 acteurs.
+Tests également exécutés sous Java 8 : 2109 vérifications réussies.
+
+Résultat de la suite finale :
+OK convois opposes et blocage entrees
+OK FIFO, evacuation, priorite et Timer
+OK arret/reprise, priorites et sens oppose
+OK nettoyage sur interruption
+OK 20 graines x 100 acteurs concurrents
+SUCCES : 2109 verifications
+
+Vérification en temps réel avec new Pont(6), sans accélération :
+OK délai réel du constructeur normal : 60009 ms.
+Le deuxième bateau est arrivé après la première fermeture ; Timer/TimerTask a déclenché la nouvelle ouverture après l'échéance.
+
+Vidéo AVI MJPEG : 29,4 secondes, 1280 × 800, 10 images/s.
+Durée, largeur et cadence reconnues par les propriétés multimédia Windows.
+Index AVI vérifié et images du début, du milieu et de la fin décodées.
+UML et aperçu de la vidéo inspectés visuellement.
+PDF du sujet identique octet pour octet au fichier original.
+
+Environnement testé : Windows. Les scripts shell Linux/macOS sont fournis mais n’ont pas été exécutés ici (WSL absent).
+Le code portable n’utilise aucune dépendance externe ; les tests ne constituent pas une preuve de correction pour tous les ordonnancements.
