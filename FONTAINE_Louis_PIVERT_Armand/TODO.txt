@@ -1,5 +1,0 @@
-Fichier UML
-Vidéo
-vérifier le .jar
-Commentaires
-le README

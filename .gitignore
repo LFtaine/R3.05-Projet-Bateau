@@ -1,0 +1,20 @@
+# Fichiers produits par la compilation
+*.class
+**/build/
+**/out/
+**/bin/
+
+# Réglages locaux des environnements de développement
+**/.idea/
+*.iml
+**/.classpath
+**/.project
+**/.settings/
+**/.vscode/
+
+# Fichiers temporaires du système et des éditeurs
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+*~
